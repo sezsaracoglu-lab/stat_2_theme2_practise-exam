@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methods &amp; Statistics II — Three Practice Exams</title>
+<style>
+:root{
+  --gold:#c9a96e; --gold-deep:#8d6f34; --gold-soft:#f6eeda; --gold-line:#e3d2ab;
+  --paper:#fbf7ef; --paper-2:#f6f1e5; --card:#fffdf8; --card-2:#faf5ea;
+  --line:#e4dac6; --line-2:#efe7d6;
+  --ink:#2b2a26; --ink-2:#4b4840; --ink-3:#7a7466;
+  --navy:#1c3454; --navy-2:#2f4d74; --navy-soft:#e8edf4; --navy-line:#c3cfdf;
+  --sage:#4e7154; --sage-soft:#e7efe6; --sage-ink:#23331f;
+  --rose:#8e4a45; --rose-soft:#f5e6e3; --rose-ink:#43201d;
+  --serif:'Cormorant Garamond','Times New Roman','DejaVu Serif',Georgia,serif;
+  --sans:'DM Sans','Helvetica Neue',Arial,'DejaVu Sans',sans-serif;
+  --mono:'DM Mono','SFMono-Regular',Consolas,'Liberation Mono',monospace;
+  --shadow:0 1px 2px rgba(60,48,20,.05),0 3px 12px rgba(60,48,20,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper); color:var(--ink); font-family:var(--sans);
+     font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased}
+
+/* ---------------------------------------------------- sticky header */
+header{
+  position:sticky; top:0; z-index:20; background:rgba(251,247,239,.96);
+  border-bottom:1px solid var(--line); backdrop-filter:blur(8px);
+}
+.hin{max-width:940px; margin:0 auto; padding:14px 22px;
+     display:flex; align-items:center; gap:20px; flex-wrap:wrap}
+.htitle{font-family:var(--serif); font-size:25px; font-weight:700; color:var(--navy);
+        line-height:1.1; margin:0; letter-spacing:-.01em}
+.hsub{font-size:9.4px; letter-spacing:.17em; text-transform:uppercase;
+      color:var(--gold-deep); font-weight:700; margin-top:5px}
+.stats{margin-left:auto; display:flex; gap:20px}
+.stat{text-align:right}
+.stat .sl{font-size:8.6px; letter-spacing:.17em; text-transform:uppercase; color:var(--ink-3); font-weight:700}
+.stat .sv{font-family:var(--serif); font-size:23px; font-weight:700; color:var(--navy); line-height:1.2}
+.stat .sv.dim{color:var(--ink-3)}
+
+/* ---------------------------------------------------- tabs */
+.tabwrap{background:var(--paper-2); border-bottom:1px solid var(--line)}
+.tabs{max-width:940px; margin:0 auto; padding:0 22px; display:flex; gap:0; flex-wrap:wrap}
+.tab{
+  appearance:none; cursor:pointer; font-family:var(--sans); text-align:left;
+  background:transparent; border:none; border-bottom:2.5px solid transparent;
+  padding:13px 18px 12px; color:var(--ink-3); transition:all .14s ease; line-height:1.25;
+}
+.tab .tn{font-size:9px; letter-spacing:.16em; text-transform:uppercase; font-weight:700; display:block; color:var(--ink-3)}
+.tab .tt{font-size:14px; font-weight:600; display:block; margin-top:3px; color:var(--ink-2)}
+.tab .tc{font-size:10.6px; font-family:var(--mono); display:block; margin-top:3px; color:var(--ink-3)}
+.tab:hover{background:var(--gold-soft)}
+.tab:hover .tt{color:var(--navy)}
+.tab[aria-selected="true"]{border-bottom-color:var(--gold); background:var(--card)}
+.tab[aria-selected="true"] .tn{color:var(--gold-deep)}
+.tab[aria-selected="true"] .tt{color:var(--navy); font-weight:700}
+.tab[aria-selected="true"] .tc{color:var(--gold-deep)}
+
+.wrap{max-width:940px; margin:0 auto; padding:26px 22px 90px}
+
+.intro{color:var(--ink-2); font-size:14.4px; line-height:1.66; margin:0 0 6px; max-width:76ch}
+.intro b{color:var(--navy)}
+.src{font-size:11.8px; color:var(--ink-3); margin:9px 0 0; font-style:italic}
+.bar{height:6px; background:var(--line-2); border-radius:99px; overflow:hidden; margin:20px 0 5px}
+.bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--gold),var(--gold-deep)); transition:width .3s ease}
+.barlab{font-size:10.4px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); font-weight:600}
+.tools{display:flex; gap:9px; flex-wrap:wrap; margin:18px 0 6px; align-items:center}
+.btn{font-family:var(--sans); font-size:12.4px; font-weight:600; color:var(--ink-2);
+     background:var(--card); border:1px solid var(--line); border-radius:9px;
+     padding:8px 15px; cursor:pointer; transition:all .13s ease; box-shadow:var(--shadow)}
+.btn:hover{border-color:var(--gold); color:var(--gold-deep); background:var(--gold-soft)}
+.btn.on{background:var(--navy); border-color:var(--navy); color:#fffdf8}
+
+/* ---------------------------------------------------- data panel */
+.dataset{
+  background:var(--card); border:1px solid var(--line); border-left:4px solid var(--gold);
+  border-radius:12px; padding:0; margin:18px 0 4px; overflow:hidden; box-shadow:var(--shadow);
+}
+.dataset > summary{
+  cursor:pointer; padding:12px 16px; font-size:13px; font-weight:700; color:var(--navy);
+  list-style:none; display:flex; align-items:center; gap:9px;
+}
+.dataset > summary::-webkit-details-marker{display:none}
+.dataset > summary::after{content:'▾'; margin-left:auto; color:var(--ink-3); font-size:12px}
+.dataset[open] > summary::after{content:'▴'}
+.dataset .dsin{padding:2px 16px 16px; font-size:13.2px; color:var(--ink-2)}
+.dataset table{border-collapse:collapse; margin:8px 0 2px; font-size:12.8px; min-width:min(100%,380px)}
+.dataset th,.dataset td{padding:6px 11px; border:1px solid var(--line); text-align:right}
+.dataset th{color:var(--navy); font-weight:700; font-size:11.4px; text-align:right; background:var(--navy-soft)}
+.dataset td{background:var(--card)}
+.dataset td:first-child,.dataset th:first-child{text-align:left}
+.dataset .dsg{display:flex; gap:22px; flex-wrap:wrap}
+.dataset p{margin:8px 0 0; font-size:12.8px; line-height:1.6}
+.dataset p b{color:var(--navy)}
+
+/* ---------------------------------------------------- sections */
+.sec{margin:40px 0 16px}
+.sec .sn{font-size:9.4px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-deep); font-weight:700}
+.sec .st{font-family:var(--serif); font-size:28px; font-weight:700; color:var(--navy); margin-top:4px}
+.sec .sr{height:1px; background:var(--line); margin-top:12px}
+
+/* ---------------------------------------------------- question cards */
+.q{background:var(--card); border:1px solid var(--line); border-radius:14px;
+   padding:19px 21px 20px; margin-bottom:13px; box-shadow:var(--shadow)}
+.qh{display:flex; align-items:center; gap:10px; margin-bottom:11px; flex-wrap:wrap}
+.qn{font-family:var(--mono); font-size:11px; color:var(--gold-deep); letter-spacing:.07em; font-weight:500}
+.qtag{font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-deep);
+      background:var(--gold-soft); border:1px solid var(--gold-line); border-radius:99px; padding:3px 10px; font-weight:700}
+.qq{font-size:15.2px; color:var(--ink); line-height:1.62; margin-bottom:14px; font-weight:500}
+.qq b{color:var(--navy)}
+.opts{display:flex; flex-direction:column; gap:8px}
+.opt{display:flex; gap:12px; align-items:flex-start; text-align:left; width:100%;
+     font-family:var(--sans); font-size:14px; color:var(--ink-2); line-height:1.5;
+     background:var(--paper); border:1.5px solid var(--line); border-radius:10px;
+     padding:11px 14px; cursor:pointer; transition:all .12s ease}
+.opt:hover:not(:disabled){border-color:var(--gold); background:var(--gold-soft); color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt .ol{font-family:var(--mono); font-size:11.4px; font-weight:700; color:var(--ink-3);
+         border:1px solid var(--line); border-radius:6px; min-width:22px; height:22px;
+         display:grid; place-items:center; flex:none; background:var(--card)}
+.opt .mk{margin-left:auto; font-size:10px; letter-spacing:.11em; text-transform:uppercase;
+         font-weight:700; flex:none; align-self:center; display:none}
+.opt.correct{background:var(--sage-soft); border-color:var(--sage); color:var(--sage-ink)}
+.opt.correct .ol{background:var(--sage); border-color:var(--sage); color:#fff}
+.opt.correct .mk{display:block; color:var(--sage)}
+.opt.wrong{background:var(--rose-soft); border-color:var(--rose); color:var(--rose-ink)}
+.opt.wrong .ol{background:var(--rose); border-color:var(--rose); color:#fff}
+.opt.wrong .mk{display:block; color:var(--rose)}
+
+.ansline{display:none; margin-top:13px; align-items:center; gap:10px; flex-wrap:wrap;
+         font-size:13px; color:var(--ink-2)}
+.ansline.show{display:flex}
+.ansline .pill{font-family:var(--mono); font-size:11.6px; font-weight:700;
+               border-radius:7px; padding:5px 11px; letter-spacing:.04em}
+.ansline .pill.ok{background:var(--sage-soft); color:#2f6b34; border:1px solid var(--sage)}
+.ansline .pill.no{background:var(--rose-soft); color:#9a3b34; border:1px solid var(--rose)}
+.ansline b{color:var(--navy)}
+
+.expl{display:none; margin-top:12px; padding:13px 16px; border-radius:11px;
+      background:var(--navy-soft); border:1px solid var(--navy-line); border-left:4px solid var(--navy);
+      font-size:13.6px; line-height:1.68; color:#22323f}
+.expl.show{display:block}
+.expl b{color:var(--navy)}
+.expl .el{font-size:9.4px; letter-spacing:.15em; text-transform:uppercase; color:var(--navy);
+          font-weight:700; margin-bottom:6px}
+
+/* ---------------------------------------------------- result */
+.done{display:none; margin-top:26px; background:var(--gold-soft); border:1px solid var(--gold-line);
+      border-left:5px solid var(--gold); border-radius:13px; padding:20px 22px; color:#4a3a16}
+.done.show{display:block}
+.done .dt{font-family:var(--serif); font-size:36px; font-weight:700; color:var(--gold-deep); line-height:1.1}
+.done .dd{color:#5c4a22; font-size:13.8px; margin-top:6px}
+.done table{border-collapse:collapse; width:100%; margin-top:14px; font-size:13px}
+.done td{padding:6px 8px; border-top:1px solid var(--gold-line); color:#4a3a16}
+.done td:last-child{text-align:right; font-family:var(--mono); font-size:12.4px; color:var(--gold-deep); font-weight:500}
+.done .grade{margin-top:13px; font-size:13.6px; color:#4a3a16}
+.done .grade b{color:var(--gold-deep)}
+
+footer{margin-top:50px; padding-top:18px; border-top:1px solid var(--line);
+       font-size:11.8px; color:var(--ink-3); line-height:1.7}
+footer b{color:var(--ink-2)}
+
+@media (max-width:640px){
+  .hin{padding:12px 15px; gap:12px}
+  .htitle{font-size:20px}
+  .stats{margin-left:0; gap:16px}
+  .tabs{padding:0 10px}
+  .tab{padding:11px 12px 10px}
+  .tab .tt{font-size:13px}
+  .wrap{padding:20px 14px 60px}
+  .sec .st{font-size:22px}
+  .opt{font-size:13.4px}
+  .opt .mk{display:none !important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hin">
+    <div>
+      <h1 class="htitle">Methods &amp; Statistics II</h1>
+      <div class="hsub" id="hsub">Three practice exams · Erasmus University Rotterdam</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="sl">Score</div><div class="sv" id="sc">0 / 0</div></div>
+      <div class="stat"><div class="sl">Remaining</div><div class="sv dim" id="rem">30</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="tabwrap"><div class="tabs" id="tabs" role="tablist"></div></div>
+
+<div class="wrap">
+
+<p class="intro" id="intro"></p>
+<p class="src" id="src"></p>
+
+<details class="dataset" id="dsBox"><summary>📋 <span id="dsTitle">The data these questions use</span></summary>
+  <div class="dsin" id="dsBody"></div>
+</details>
+
+<div class="bar"><i id="bar"></i></div>
+<div class="barlab" id="barlab">Nothing answered yet</div>
+
+<div class="tools">
+  <button class="btn" id="btnWrong">Show only my mistakes</button>
+  <button class="btn" id="btnReveal">Reveal all answers</button>
+  <button class="btn" id="btnReset">↺ Start this test again</button>
+</div>
+
+<div id="list"></div>
+<div class="done" id="done"></div>
+
+<footer>
+  Three exams built from the three documents you were given: <b>Worked Example 3</b> (care of and for the elderly),
+  <b>Homework Assignment 2</b> (proportions) and <b>Practical Assignment 2</b> (are anecdotal opinions on education correct?).<br>
+  The question <em>types</em> are the ones in those documents; the numbers are new, and every figure was computed independently before the
+  question was written, so the distractors are the values the common wrong routes actually produce.<br>
+  Each test keeps its own score. Your answers are not saved anywhere — closing the page starts you fresh.
+</footer>
+
+</div>
+
+<script>
+/* ===========================================================================
+   TEST A — Worked Example 3: care of and for the elderly.
+   Design, measurement level, and both chi-square tests. 30 items.
+   Running data set (used wherever a question needs numbers):
+     60 elderly residents and 60 carers, N = 120.
+     Happy        elders 48 yes / 12 no   carers 36 yes / 24 no
+     Desire       elders 51 yes /  9 no   carers 42 yes / 18 no
+     Being needed elders 39 yes / 21 no   carers 33 yes / 27 no
+     Depressed    elders 30/20/10         carers 18/24/18  (seldom/sometimes/often)
+   =========================================================================== */
+var TESTA = [
+
+/* ---------------------------------------------- design & measurement (8) */
+{s:'Design &amp; measurement', n:'A1',
+ q:'Researchers ask 60 residents of care homes and their 60 carers to fill in a questionnaire about the residents’ well-being. Nobody is assigned to anything; the researchers simply record what each person answers. Is the design experimental or correlational?',
+ o:['Correlational — no variable is manipulated by the researcher',
+    'Experimental — there are two groups being compared',
+    'Experimental — there is a clear dependent variable',
+    'Correlational — because the sample is small'],
+ a:0,
+ x:'The test is always the same: <b>did the researcher assign anyone to a condition?</b> Here nobody is assigned — being a resident or a carer is a pre-existing fact, and the researchers only observe and record. That makes it <b>correlational</b> (observational). Comparing two groups does not make a study an experiment, and neither does having a clear outcome variable; sample size is irrelevant to the label.'},
+
+{s:'Design &amp; measurement', n:'A2',
+ q:'“Happiness” is recorded as <b>1 = yes, 0 = no</b>. What is its measurement level?',
+ o:['Nominal','Ordinal','Interval','Ratio'],
+ a:0,
+ x:'<b>Nominal.</b> The 1 and the 0 are labels for two unordered categories — they could just as well be the letters Y and N. Being written as numbers does not make a variable quantitative, and you cannot meaningfully say that “1 happy” is one unit more than “0 happy”. This matters practically: nominal data are <em>counted</em>, which is why this study uses chi-square rather than a t-test.'},
+
+{s:'Design &amp; measurement', n:'A3',
+ q:'“Feeling depressed” is recorded as <b>1 = seldom/never, 2 = sometimes, 3 = often/always</b>. What is its measurement level?',
+ o:['Ordinal — the categories are ordered, but the gaps are not equal',
+    'Nominal — they are still just categories',
+    'Interval — the numbers 1, 2, 3 are equally spaced',
+    'Ratio — because 3 is three times 1'],
+ a:0,
+ x:'<b>Ordinal.</b> There is a genuine order — “often” really is more than “sometimes” — but the distance from seldom to sometimes is not guaranteed to equal the distance from sometimes to often. The numbers 1, 2, 3 are convenient labels, not measurements, so their equal spacing on the page is an illusion. You may report a median; you may not report a mean “depression score” of 1.7.'},
+
+{s:'Design &amp; measurement', n:'A4',
+ q:'The 38 care questions are scored on a <b>5-point Likert scale</b> from 5 = good to 1 = not so good. Strictly speaking, what is the measurement level of a single Likert item?',
+ o:['Ordinal','Nominal','Interval','Ratio'],
+ a:0,
+ x:'<b>Ordinal.</b> A single Likert item gives ordered categories with no guarantee that the psychological distance from 1 to 2 equals that from 4 to 5. (In practice psychologists often treat the <em>sum</em> of many Likert items as interval-like, which is a defensible convention — but the item itself is ordinal, and that is what an exam question about “measurement level” is testing.)'},
+
+{s:'Design &amp; measurement', n:'A5',
+ q:'Each resident answers about themselves, and <em>a different person</em> — their carer — answers about that resident. The two sets of answers are then compared. Is the comparison between-subjects or within-subjects?',
+ o:['Between-subjects — the two sets of answers come from two different groups of people',
+    'Within-subjects — the answers concern the same residents',
+    'Neither, because the variable is nominal',
+    'Both at once, which is why chi-square is needed'],
+ a:0,
+ x:'<b>Between-subjects.</b> The unit that produces each answer is a <em>person filling in a questionnaire</em>, and those are two separate sets of people: 60 residents and 60 carers. The comparison is of one group against another. It is tempting to call it within-subjects because the answers are <em>about</em> the same residents — but the respondents differ, and it is the respondents who are being compared. If each resident had answered the same questionnaire twice, six months apart, that would be within-subjects.'},
+
+{s:'Design &amp; measurement', n:'A6',
+ q:'In the research question “do residents and carers answer the happiness question differently?”, which variable is the independent one?',
+ o:['Role — whether the respondent is a resident or a carer',
+    'Happiness — whether the answer is yes or no',
+    'Both are dependent variables',
+    'Neither — correlational studies have no independent variable'],
+ a:0,
+ x:'<b>Role</b> is the independent (explanatory) variable: it is the grouping you are comparing across. Happiness is the dependent (response) variable — the answer you expect to differ between the groups. Note that a correlational study <em>does</em> still have independent and dependent variables; what it lacks is manipulation of the independent variable, which is why the labels describe the analysis rather than a causal claim.'},
+
+{s:'Design &amp; measurement', n:'A7',
+ q:'Passer lists three conditions for demonstrating causality. Which set is correct?',
+ o:['Covariation, temporal order (cause before effect), and elimination of alternative explanations',
+    'A large sample, a significant p-value, and replication',
+    'Random sampling, random assignment, and a control group',
+    'Covariation, a normal distribution, and equal variances'],
+ a:0,
+ x:'The three conditions are <b>covariation</b> (the two things actually go together), <b>temporal order</b> (the cause comes first), and <b>elimination of alternative explanations</b> (nothing else could account for it). Random assignment and control groups are <em>how</em> you achieve the third condition, not the condition itself; and a normal distribution and a small p-value are statistical matters that say nothing about causation.'},
+
+{s:'Design &amp; measurement', n:'A8',
+ q:'Applying those three conditions to this study, which is true?',
+ o:['Covariation can be shown, but temporal order and the elimination of alternatives cannot — so no causal claim is possible',
+    'All three are met, because the sample is reasonably large',
+    'All three fail, so the study tells us nothing',
+    'Temporal order is met, because the residents answered before the carers did'],
+ a:0,
+ x:'A chi-square test can establish <b>covariation</b> — that role and answer go together. But everything is measured at one moment, so there is no <em>temporal order</em>; and nothing has been controlled, so countless <em>alternative explanations</em> remain (health, length of stay, how well the carer knows the resident). One condition of three: association, not causation. That does not make the study worthless — describing the gap between the two perspectives is a real and useful finding.'},
+
+/* ---------------------------------------------- merging categories (3) */
+{s:'Merging categories', n:'A9',
+ q:'The researchers collapse the 5-point care scale into two categories: 4 and 5 become “good”, and 1, 2 and 3 become “not so good”. What is the most likely statistical reason?',
+ o:['To avoid expected cell counts that are too small for a chi-square test',
+    'To make the variable interval instead of ordinal',
+    'To increase the sample size',
+    'To make the data normally distributed'],
+ a:0,
+ x:'Spreading 60 people across five categories on 38 questions leaves very thin cells, and chi-square needs adequate <b>expected</b> counts. Collapsing to two categories concentrates the counts and keeps the test valid. It does not change the sample size (the same people are still there), it does not upgrade the measurement level — it goes the other way, to nominal — and chi-square never required normality in the first place.'},
+
+{s:'Merging categories', n:'A10',
+ q:'What is a genuine <b>advantage</b> of that merge?',
+ o:['The expected counts per cell become large enough for the test’s assumptions to be met',
+    'The result becomes statistically significant',
+    'The measurement level improves from ordinal to interval',
+    'It removes the need to state hypotheses'],
+ a:0,
+ x:'The advantage is practical and specific: <b>larger expected counts</b>, so the chi-square approximation is trustworthy, and a simpler table that is easier to read and report. Merging cannot be justified on the grounds that it produces significance — choosing categories after seeing which split gives p &lt; .05 is exactly the practice that makes findings unreplicable.'},
+
+{s:'Merging categories', n:'A11',
+ q:'And the <b>disadvantage</b>?',
+ o:['Information is thrown away — a 5 and a 4 are no longer distinguishable, nor are a 3 and a 1',
+    'The test can no longer be performed',
+    'The sample size falls',
+    'The variable becomes interval, which chi-square cannot handle'],
+ a:0,
+ x:'Collapsing is <b>irreversible loss of detail</b>. Someone who answered 5 and someone who answered 4 now look identical, and — more seriously — a 3 (middling) is pooled with a 1 (poor). A real difference between “middling” and “poor” care becomes invisible, and any genuine gradient across the five points is flattened. The sample size does not change, and the test still runs perfectly well.'},
+
+/* ---------------------------------------------- which chi-square (4) */
+{s:'Which chi-square test', n:'A12',
+ q:'You want to know whether residents and carers give different answers on the happiness question. Which test?',
+ o:['Chi-square test for independence / comparing populations — two categorical variables',
+    'Chi-square goodness-of-fit test — one categorical variable',
+    'Independent-samples t-test',
+    'One-sample z-test for a proportion'],
+ a:0,
+ x:'Count the variables. There are <b>two</b>: role (resident / carer) and happiness (yes / no). Two categorical variables go into a grid, and the grid gets the <b>test for independence</b>. Goodness of fit is the one-variable version, for when you have a single row of counts and a claimed distribution to check it against.'},
+
+{s:'Which chi-square test', n:'A13',
+ q:'You want to know whether the residents’ happiness answers match a prior expectation of 80% happy and 20% unhappy. Which test?',
+ o:['Chi-square goodness-of-fit test — one variable against a claimed distribution',
+    'Chi-square test for independence',
+    'Paired-samples t-test',
+    'Two-proportion z-test'],
+ a:0,
+ x:'Only <b>one</b> variable is involved (happiness), and it is being compared against an external claim rather than against another variable. That is the <b>goodness-of-fit</b> test: expected counts come from the claimed proportions times the sample size, not from row and column totals.'},
+
+{s:'Which chi-square test', n:'A14',
+ q:'Which research question would require the <b>goodness-of-fit</b> test rather than the test for independence?',
+ o:['“Do the carers’ depression ratings follow the 50 / 30 / 20 split reported in the national survey?”',
+    '“Do residents and carers differ in their depression ratings?”',
+    '“Is loneliness related to whether the resident has plans for the future?”',
+    '“Does role predict whether someone reports a desire to live?”'],
+ a:0,
+ x:'The question about the carers’ depression ratings names <b>one</b> variable and supplies a distribution to test it against — the signature of goodness of fit. The other three options all cross two categorical variables against each other, which is the test for independence. The cue phrase to look for is “<em>match / fit / correspond to</em> [a stated set of proportions]”.'},
+
+{s:'Which chi-square test', n:'A15',
+ q:'What do the two chi-square tests have in common?',
+ o:['The same formula, χ² = Σ(O − E)² ÷ E, and the same right-tail decision',
+    'The same degrees of freedom rule',
+    'The same way of computing expected counts',
+    'Nothing — they are entirely separate procedures'],
+ a:0,
+ x:'The statistic is <b>identical</b>, and both are tested in the right tail only, because χ² can never be negative and only large values count as evidence against H₀. What differs is where the expected counts come from — row × column ÷ total versus claimed proportion × n — and the df rule: (r − 1)(c − 1) versus k − 1.'},
+
+/* ---------------------------------------------- expected counts & χ² (7) */
+{s:'Expected counts &amp; the statistic', n:'A16',
+ q:'Of 60 residents, 48 say they are happy; of 60 carers, 36 say the resident is happy. So 84 of the 120 respondents said “happy”. If H₀ were true, what is the <b>expected</b> count for residents saying “happy”?',
+ o:['42.0','48.0','40.0','30.0'],
+ a:0,
+ x:'Expected = row total × column total ÷ grand total = 60 × 84 ÷ 120 = <b>42.0</b>.<br>Read what that means: if role made no difference, both groups would show the overall happy rate of 84/120 = 70%, and 70% of 60 is 42. The observed 48 is six above it — and the carers’ 36 is six below, because the row and column totals are fixed. (48 is the observed count, not the expected one.)'},
+
+{s:'Expected counts &amp; the statistic', n:'A17',
+ q:'Same table: residents 48 happy / 12 not, carers 36 happy / 24 not, with expected counts 42, 18, 42, 18. What is χ²?',
+ o:['5.714','1.714','12.000','2.857'],
+ a:0,
+ x:'One term per cell:<br>(48 − 42)² ÷ 42 = 36 ÷ 42 = <b>0.857</b><br>(12 − 18)² ÷ 18 = 36 ÷ 18 = <b>2.000</b><br>(36 − 42)² ÷ 42 = <b>0.857</b><br>(24 − 18)² ÷ 18 = <b>2.000</b><br>χ² = 0.857 + 2.000 + 0.857 + 2.000 = <b>5.714</b><br>Notice that every cell is off by exactly 6, yet the two small cells contribute more than twice as much — because you divide by the expected count.'},
+
+{s:'Expected counts &amp; the statistic', n:'A18',
+ q:'In that table every cell is off by 6. Which cell contributes <b>most</b> to χ², and why?',
+ o:['A cell with expected count 18, because dividing by a smaller expected count makes the same miss count for more',
+    'A cell with expected count 42, because it is the largest',
+    'They contribute equally, since all four are off by 6',
+    'It cannot be determined without the p-value'],
+ a:0,
+ x:'Each contribution is 36 ÷ E, so the <b>smallest expected count gives the largest contribution</b>: 36 ÷ 18 = 2.000 against 36 ÷ 42 = 0.857. That division is the whole point of the formula — a miss of 6 where you expected 18 is a 33% error, while the same miss of 6 where you expected 42 is only 14%.'},
+
+{s:'Expected counts &amp; the statistic', n:'A19',
+ q:'What are the degrees of freedom for a chi-square test on a 2 × 2 table?',
+ o:['1','2','3','4'],
+ a:0,
+ x:'df = (rows − 1) × (columns − 1) = (2 − 1)(2 − 1) = <b>1</b>.<br>The intuition: once the row and column totals are fixed, filling in one cell of a 2 × 2 table forces all the other three. Only one number was ever free to vary. At df = 1 the critical value at α = .05 is <b>3.841</b>.'},
+
+{s:'Expected counts &amp; the statistic', n:'A20',
+ q:'The depression variable has three levels, so role × depression is a 2 × 3 table. What is df, and what is the critical value at α = .05?',
+ o:['df = 2, critical value 5.991','df = 3, critical value 7.815',
+    'df = 6, critical value 12.592','df = 1, critical value 3.841'],
+ a:0,
+ x:'df = (2 − 1)(3 − 1) = <b>2</b>, and the α = .05 entry on the df = 2 row is <b>5.991</b>. The rule to keep straight: df is <em>not</em> rows × columns. A 2 × 3 table has six cells but only two free ones once the margins are fixed.'},
+
+{s:'Expected counts &amp; the statistic', n:'A21',
+ q:'For the desire-to-live variable: residents 51 yes / 9 no, carers 42 yes / 18 no, so 93 of 120 said yes. What is the expected count for <b>residents saying “no”</b>, and what does that cell contribute to χ²?',
+ o:['Expected 13.5, contributing 1.500','Expected 13.5, contributing 0.435',
+    'Expected 9.0, contributing 0.000','Expected 27.0, contributing 12.0'],
+ a:0,
+ x:'Expected = 60 × 27 ÷ 120 = <b>13.5</b>.<br>Contribution = (9 − 13.5)² ÷ 13.5 = 20.25 ÷ 13.5 = <b>1.500</b>.<br>The cell contribution tells you <em>where</em> the association lives: this one is the single largest of the four, so the residents’ unusually small number of “no desire to live” answers is what is driving the result. (0.435 is what the residents-yes cell contributes.)'},
+
+{s:'Expected counts &amp; the statistic', n:'A22',
+ q:'For that same desire-to-live table, χ² = 3.871 with df = 1. What do you conclude at α = .05?',
+ o:['Reject H₀ — 3.871 exceeds the critical value of 3.841, but only just',
+    'Fail to reject H₀ — 3.871 is below 3.841',
+    'Reject H₀ decisively — the evidence is very strong',
+    'The test cannot be interpreted without the sample size'],
+ a:0,
+ x:'3.871 &gt; 3.841, so H₀ is <b>rejected</b> — but by a hair: p = .049, barely under .05. The honest way to report a result like this is to give the exact p-value rather than just “significant”, because a single respondent moving between cells would flip the verdict. Treat it as suggestive, not settled.'},
+
+/* ---------------------------------------------- decision & reporting (5) */
+{s:'Decision &amp; reporting', n:'A23',
+ q:'In the happiness test, what exactly does H₀ say?',
+ o:['There is no relation between role and the happiness answer in the population — the percentages are the same in both groups',
+    'The residents and the carers gave exactly the same counts',
+    'The proportion of happy answers is 50%',
+    'Residents are happier than their carers believe'],
+ a:0,
+ x:'H₀ is always about the <b>population</b>, and always says “no relation”. Its useful second wording is: <em>the percentages are the same in the different groups</em> — which is something you can actually check by looking at a table of row percentages. It is never a claim about the sample counts being identical, and never a directional claim (that would be H₁, and chi-square has no direction anyway).'},
+
+{s:'Decision &amp; reporting', n:'A24',
+ q:'What are the conditions for a chi-square test on a 2 × 2 table?',
+ o:['All four expected counts should be at least 5',
+    'All four observed counts should be at least 5',
+    'The sample size should be at least 30',
+    'The data should be approximately normally distributed'],
+ a:0,
+ x:'For a <b>2 × 2</b> table the rule is strict: <b>all four expected counts ≥ 5</b>. (For larger tables it is the <em>average</em> expected count that must be at least 5, with all individual counts at least 1.) The condition is about <b>expected</b> counts, not observed ones — a common misremembering. Chi-square never assumes normality; that is what makes it the test for categorical data.'},
+
+{s:'Decision &amp; reporting', n:'A25',
+ q:'Two equivalent ways to decide about H₀ from SPSS output are:',
+ o:['Compare χ² with the critical value, or compare the p-value with α',
+    'Compare χ² with α, or compare the p-value with the critical value',
+    'Compare the expected counts with the observed counts, or check the sample size',
+    'Look at the bar chart, or look at the percentages'],
+ a:0,
+ x:'Two routes, one verdict. Either compare the <b>statistic to the critical value</b> (reject if χ² &gt; 3.841 at df = 1, α = .05), or compare the <b>p-value to α</b> (reject if p ≤ .05). They always agree, because the critical value is defined as the χ² whose tail area is exactly α. Mixing the two up — comparing χ² to .05 — is the classic slip.'},
+
+{s:'Decision &amp; reporting', n:'A26',
+ q:'How is the happiness result written in APA style?',
+ o:['χ²(1, N = 120) = 5.71, p = .017',
+    'χ²(120) = 5.71, p = .017',
+    'χ² = 5.71(1), p &lt; .05, N = 120',
+    'X²(1) = 5.714, p = 0.0168'],
+ a:0,
+ x:'The APA pattern is <b>χ²(df, N = sample size) = statistic, p = value</b>. So: <b>χ²(1, N = 120) = 5.71, p = .017</b>. Points to get right: df comes first and N second inside the brackets; the statistic is given to two decimals; and the p-value is written without the leading zero, because p can never exceed 1.'},
+
+{s:'Decision &amp; reporting', n:'A27',
+ q:'A clustered bar chart shows that 80% of residents report having plans for the future (48 of 60), against 55% of carers (33 of 60), and the test gives χ²(1) = 8.55, p = .003. What is the correct conclusion?',
+ o:['Residents report plans for the future significantly more often than their carers believe they do',
+    'Having plans for the future causes people to become carers',
+    'The residents are mistaken about their own plans',
+    'Nothing can be concluded, because the chart shows percentages rather than counts'],
+ a:0,
+ x:'The finding is a <b>difference in perspective</b>: residents report plans more often than their carers credit them with. Two things to avoid — a causal claim (this is observational data), and deciding whose answer is “correct”. Neither group is the gold standard; the point of the study is precisely that the two viewpoints diverge, which is worth knowing when carers plan someone’s care.'},
+
+/* ---------------------------------------------- goodness of fit (3) */
+{s:'Goodness of fit', n:'A28',
+ q:'You expect 80% happy and 20% unhappy. Among the 60 residents, what are the expected counts?',
+ o:['48 happy and 12 unhappy','30 happy and 30 unhappy',
+    '80 happy and 20 unhappy','12 happy and 48 unhappy'],
+ a:0,
+ x:'Expected = claimed proportion × sample size: 0.80 × 60 = <b>48</b> and 0.20 × 60 = <b>12</b>. They must add up to n — 48 + 12 = 60 ✓, a free check. The trap is entering the <em>percentages</em> 80 and 20 as if they were counts; SPSS lets you type 20 and 80 under “Expected Values → Values” precisely because it converts them to counts for you.'},
+
+{s:'Goodness of fit', n:'A29',
+ q:'The 60 residents actually answered 48 happy and 12 unhappy. What is χ² for the goodness-of-fit test against the 80/20 claim?',
+ o:['0.000','1.000','5.714','15.000'],
+ a:0,
+ x:'Observed equals expected in <em>every</em> category — 48 = 48 and 12 = 12 — so every term (O − E)² ÷ E is zero and <b>χ² = 0.000</b>. That is the friendliest possible result for H₀: the residents’ answers match the 80/20 expectation exactly. A χ² of zero is never suspicious, because there is no left tail to fall into.'},
+
+{s:'Goodness of fit', n:'A30',
+ q:'The 60 carers answered 36 happy and 24 unhappy, against the same expected 48 and 12. What is χ², and what do you conclude at α = .05?',
+ o:['χ² = 15.00, df = 1 — reject H₀; the carers’ answers do not fit the 80/20 expectation',
+    'χ² = 15.00, df = 2 — reject H₀',
+    'χ² = 3.00, df = 1 — fail to reject H₀',
+    'χ² = 12.00, df = 1 — reject H₀'],
+ a:0,
+ x:'(36 − 48)² ÷ 48 = 144 ÷ 48 = <b>3.00</b><br>(24 − 12)² ÷ 12 = 144 ÷ 12 = <b>12.00</b><br>χ² = <b>15.00</b>, df = k − 1 = 2 − 1 = <b>1</b>, critical value 3.841, so p &lt; .001 — <b>reject H₀</b>.<br>The contrast with the previous question is the lesson: the same 80/20 expectation fits the residents perfectly and the carers not at all. Carers are markedly more pessimistic about the residents’ happiness than the residents themselves are. (3.00 is only the first term; 12.00 only the second.)'}
+
+];
+/* ===========================================================================
+   TEST B — Homework Assignment 2: proportions, confidence intervals and
+   significance tests. Same question types as the homework, new numbers. 30 items.
+   =========================================================================== */
+var TESTB = [
+
+/* ---------------------------------------------- conditions (4) */
+{s:'Conditions &amp; when to use what', n:'B1',
+ q:'What is the condition for using the large-sample (ordinary) confidence interval for a single proportion p?',
+ o:['At least 10 successes and at least 10 failures in the sample',
+    'A sample size of at least 10',
+    'A sample size of at least 30',
+    'The population must be normally distributed'],
+ a:0,
+ x:'The rule is about the <b>counts in each category</b>, not the total: you need at least <b>10 successes and 10 failures</b>. A sample of 200 with only 3 successes fails the condition despite being large, because it is the smaller of the two counts that controls whether the normal approximation works. “n ≥ 30” is the rule of thumb for <em>means</em>, and the population’s own shape is irrelevant here — the data are 0s and 1s, never normal.'},
+
+{s:'Conditions &amp; when to use what', n:'B2',
+ q:'In a sample of 25 items, 7 are defective. Which confidence-interval method should you use for the proportion of defectives?',
+ o:['The plus-four method','The large-sample interval',
+    'Neither method can be used','A t-interval with 24 degrees of freedom'],
+ a:0,
+ x:'There are 7 successes and 18 failures. Seven is below 10, so the large-sample interval is not valid — but the situation is fixable, so the answer is not “neither”. The <b>plus-four</b> method handles it: add two successes and two failures, giving p̃ = 9 ÷ 29 = 0.310, and proceed as normal. A t-interval is for means, not proportions.'},
+
+{s:'Conditions &amp; when to use what', n:'B3',
+ q:'It is known that 15% of students taking a course receive a distinction. There are 140 students in one section. Is the normal approximation justified?',
+ o:['Yes, because np = 21 and nq = 119, both above 10',
+    'Yes, because np = 21 and npq = 17.85, both above 10',
+    'No, because np = 21 is too small',
+    'No, because the sample is not randomly selected'],
+ a:0,
+ x:'Check both products: np = 140 × 0.15 = <b>21</b> and nq = 140 × 0.85 = <b>119</b>. Both comfortably exceed 10, so the sampling distribution of p̂ is approximately normal. The quantity to check is <b>nq</b>, not npq — npq is the <em>variance</em> of the count, a different thing that happens to look similar.'},
+
+{s:'Conditions &amp; when to use what', n:'B4',
+ q:'What does the plus-four method actually do?',
+ o:['Adds two successes and two failures to the data, then applies the ordinary formula',
+    'Adds four observations to the sample size only',
+    'Multiplies the standard error by four',
+    'Widens the interval by four percentage points'],
+ a:0,
+ x:'You pretend you saw <b>four extra observations: two successes and two failures</b>. So p̃ = (X + 2) ÷ (n + 4), and everything else proceeds exactly as before. The effect is to pull the estimate gently toward 0.5, which stops the interval from being absurdly narrow — or from running past 0 or 1 — when a count is small. For a <b>difference</b> between two proportions the same idea is applied per group: add <em>one</em> success and <em>one</em> failure to each sample, so p̃ = (X + 1) ÷ (n + 2) in both.'},
+
+/* ---------------------------------------------- one-proportion CI (6) */
+{s:'Confidence intervals for one proportion', n:'B5',
+ q:'A sample of 90 students found that 63 of them owned a bicycle. What is the margin of error for a 95% confidence interval for the proportion of all students who own one?',
+ o:['0.095','0.048','0.700','0.189'],
+ a:0,
+ x:'p̂ = 63 ÷ 90 = <b>0.700</b><br>SE = √(0.700 × 0.300 ÷ 90) = √0.002333 = <b>0.0483</b><br>m = 1.96 × 0.0483 = <b>0.095</b><br>(0.048 is the standard error on its own — the margin still has to be multiplied by z*. 0.700 is p̂ itself, and 0.189 is the full <em>width</em> of the interval, which is twice the margin.) The interval would be 0.700 ± 0.095 = (0.605, 0.795).'},
+
+{s:'Confidence intervals for one proportion', n:'B6',
+ q:'You buy a packet of 150 sweets and 24 of them are red. What is the 95% confidence interval for the true proportion of red sweets?',
+ o:['(0.101, 0.219)','(0.130, 0.190)','(0.115, 0.205)','(0.093, 0.227)'],
+ a:0,
+ x:'p̂ = 24 ÷ 150 = <b>0.160</b><br>SE = √(0.160 × 0.840 ÷ 150) = <b>0.0299</b><br>m = 1.96 × 0.0299 = <b>0.0587</b><br>Interval = 0.160 ± 0.0587 = <b>(0.101, 0.219)</b><br>First check the condition: 24 successes and 126 failures, both above 10, so the large-sample interval is allowed.'},
+
+{s:'Confidence intervals for one proportion', n:'B7',
+ q:'A sniffer dog is correct in 47 of 50 trials. The large-sample 95% interval comes out as (0.874, 1.006). What should you do?',
+ o:['Use the plus-four interval instead — only 3 failures, and an upper limit above 1 is impossible',
+    'Report it as (0.874, 1.000), truncating the impossible part',
+    'Report it as it stands; intervals may exceed 1',
+    'Increase the confidence level to 99% to fix it'],
+ a:0,
+ x:'Two warning signs at once: only <b>3 failures</b> (well below 10), and an upper limit of <b>1.006</b>, which is not a possible proportion. That is the large-sample formula breaking down. Use <b>plus-four</b>: p̃ = 49 ÷ 54 = 0.907, SE = √(0.907 × 0.093 ÷ 54) = 0.0394, interval = 0.907 ± 1.96(0.0394) = <b>(0.830, 0.985)</b> — entirely inside [0, 1]. Truncating the broken interval hides the problem rather than fixing it; raising the confidence level makes it wider still.'},
+
+{s:'Confidence intervals for one proportion', n:'B8',
+ q:'A poll finds that 52% of the 940 people surveyed support a proposal. What is the standard error for a confidence interval for this level of support?',
+ o:['0.016','0.032','0.0003','0.500'],
+ a:0,
+ x:'SE = √(p̂(1 − p̂) ÷ n) = √(0.52 × 0.48 ÷ 940) = √0.0002655 = <b>0.0163 ≈ 0.016</b>.<br>Note how small it is: a sample near a thousand pins the proportion down to about ±3 percentage points at 95% confidence, which is why political polls quote exactly that figure. (0.0003 is the <em>variance</em> — don’t forget the square root. 0.032 is the 95% margin of error, which is 1.96 × SE, a step further on.)'},
+
+{s:'Confidence intervals for one proportion', n:'B9',
+ q:'You want a 95% confidence interval for the proportion of adults who have a particular allergy, with a margin of error of 0.03. Previous studies suggest the proportion is around 0.09. What sample size is required?',
+ o:['350','340','334','1068'],
+ a:0,
+ x:'n = (z*/m)² × p*(1 − p*)<br>= (1.96 ÷ 0.03)² × 0.09 × 0.91<br>= 4268.4 × 0.0819 = 349.6<br>Always round <b>up</b> — you cannot survey 349.6 people, and rounding down would leave the margin of error slightly too big. So <b>n = 350</b>. (1068 is what you get from the conservative p* = 0.5, used when no prior estimate is available.)'},
+
+{s:'Confidence intervals for one proportion', n:'B10',
+ q:'Everything else held constant, what happens to the margin of error if you raise the confidence level from 95% to 99%?',
+ o:['It gets larger, because z* rises from 1.96 to 2.576',
+    'It gets smaller, because we are more confident',
+    'It is unchanged — only n affects it',
+    'It gets larger, because the standard error rises'],
+ a:0,
+ x:'m = z* × SE, and higher confidence means a bigger z*: <b>1.645 at 90%, 1.96 at 95%, 2.576 at 99%</b>. So the interval <b>widens</b>. The standard error does not move — it depends only on p̂ and n. The trade-off is unavoidable: more confidence buys you less precision, and the only way out is more data.'},
+
+/* ---------------------------------------------- sampling distribution (4) */
+{s:'The sampling distribution of p̂', n:'B11',
+ q:'It is known that 15% of students receive a distinction, and a section contains 140 students. What is the probability that at least 18% of them receive one?',
+ o:['0.161','0.839','0.030','0.994'],
+ a:0,
+ x:'SE = √(0.15 × 0.85 ÷ 140) = <b>0.0302</b><br>z = (0.18 − 0.15) ÷ 0.0302 = <b>0.99</b><br>P(Z ≥ 0.99) = 1 − 0.8389 = <b>0.161</b><br>Note that the SE here uses the <em>known</em> p = 0.15, not a sample estimate — this is a probability question about the sampling distribution, not a confidence interval. (0.839 is the area on the wrong side; 0.030 is the raw difference in proportions.)'},
+
+{s:'The sampling distribution of p̂', n:'B12',
+ q:'A university claims 22% of its students go abroad during the break. In a random sample of 120 students, what is the approximate probability that fewer than 16% went abroad?',
+ o:['0.056','0.944','0.060','0.159'],
+ a:0,
+ x:'SE = √(0.22 × 0.78 ÷ 120) = <b>0.0378</b><br>z = (0.16 − 0.22) ÷ 0.0378 = <b>−1.59</b><br>P(Z &lt; −1.59) = <b>0.056</b><br>So a sample this low would happen about 6% of the time if the claim were true — unusual, but not damning. The sign of z matters: “fewer than” means the <em>left</em> tail, read straight from the table.'},
+
+{s:'The sampling distribution of p̂', n:'B13',
+ q:'What happens to the standard error of p̂ if the sample size is multiplied by four?',
+ o:['It halves','It quarters','It doubles','It is unchanged'],
+ a:0,
+ x:'SE = √(p(1 − p) ÷ n), so n sits under a <b>square root</b>. Multiplying n by 4 multiplies √n by 2, which <b>halves</b> the standard error. This is the law of diminishing returns in surveying: to halve your uncertainty you must quadruple your data, and to halve it again you need sixteen times the original sample.'},
+
+{s:'The sampling distribution of p̂', n:'B14',
+ q:'For which value of p is the standard error of p̂ at its largest, for a fixed n?',
+ o:['p = 0.5','p = 0.1','p = 0.9','It is the same for every p'],
+ a:0,
+ x:'p(1 − p) is largest when <b>p = 0.5</b>, where it equals 0.25. At p = 0.1 or 0.9 it is only 0.09. So a 50/50 split is the hardest case to pin down — which is exactly why <b>p* = 0.5</b> is used in the sample-size formula when you have no prior estimate: it guarantees the sample is big enough whatever the truth turns out to be.'},
+
+/* ---------------------------------------------- one-proportion test (5) */
+{s:'Testing one proportion', n:'B15',
+ q:'In a sample of 560 students, 312 ate breakfast. To test H₀: p = 0.50 against Hₐ: p &gt; 0.50, what is the test statistic?',
+ o:['2.70','1.35','5.41','0.06'],
+ a:0,
+ x:'p̂ = 312 ÷ 560 = <b>0.5571</b><br>SE₀ = √(0.50 × 0.50 ÷ 560) = √0.000446 = <b>0.02113</b><br>z = (0.5571 − 0.50) ÷ 0.02113 = <b>2.70</b><br>The crucial detail: in a <em>test</em> the standard error uses the <b>hypothesised</b> p₀ = 0.50, not p̂. Using p̂ instead would give 0.0210 and a slightly different z — and is the single most common error in this calculation.'},
+
+{s:'Testing one proportion', n:'B16',
+ q:'For that same test — 312 of 560, H₀: p = 0.50 against Hₐ: p &gt; 0.50, z = 2.70 — what is the p-value?',
+ o:['0.0035','0.0069','0.9965','0.0571'],
+ a:0,
+ x:'Hₐ points one way, so the p-value is the <b>single</b> upper tail:<br>P(Z ≥ 2.70) = 1 − 0.9965 = <b>0.0035</b><br>Since 0.0035 &lt; 0.05, reject H₀ and conclude that more than half of all students eat breakfast. (0.0069 is the two-sided value, which this alternative does not call for; 0.9965 is the area on the wrong side.)'},
+
+{s:'Testing one proportion', n:'B17',
+ q:'A psychic is shown 480 cards and asked which of four symbols each carries. She is right 140 times. Testing H₀: p = 0.25 against Hₐ: p &gt; 0.25, what is the p-value?',
+ o:['0.0174','0.0349','0.9826','0.2917'],
+ a:0,
+ x:'p̂ = 140 ÷ 480 = <b>0.2917</b><br>SE₀ = √(0.25 × 0.75 ÷ 480) = <b>0.01976</b><br>z = (0.2917 − 0.25) ÷ 0.01976 = <b>2.11</b><br>P(Z ≥ 2.11) = 1 − 0.9826 = <b>0.0174</b><br>So she did better than guessing, by a margin unlikely to be chance. Worth noticing what this does <em>not</em> establish: significance says the result is hard to explain by luck, not that the explanation is ESP.'},
+
+{s:'Testing one proportion', n:'B18',
+ q:'A student tests H₀: p = 0.20 and finds p = .034, so rejects at α = .05. He then computes a 95% confidence interval and finds it is (0.199, 0.321), which <em>contains</em> 0.20. Why the apparent contradiction?',
+ o:['The test uses the hypothesised p₀ = 0.20 in the standard error, while the interval uses the observed p̂ — so the two standard errors differ',
+    'He has made an arithmetic error in one of the two',
+    'He should have used the plus-four interval',
+    'The confidence level and the significance level do not match'],
+ a:0,
+ x:'They are computed from <b>different standard errors</b>. The test asks “if p really were 0.20, how surprising is this sample?” and so uses √(0.20 × 0.80 ÷ n). The interval has no hypothesis to lean on and uses √(p̂(1 − p̂) ÷ n). When a result sits right on the boundary, that small difference can put the test on one side and the interval on the other. Neither is wrong — they answer slightly different questions.'},
+
+{s:'Testing one proportion', n:'B19',
+ q:'An article reports that “the incidence of side effects was similar to placebo, P &gt; 0.05”. At the 10% level, what can you conclude?',
+ o:['Not enough information — the p-value could be anywhere between 0.05 and 1',
+    'Do not reject the null hypothesis at 10%',
+    'Reject the null hypothesis at 10%',
+    'The null hypothesis has been proved true'],
+ a:0,
+ x:'“P &gt; 0.05” is a boundary, not a value. The true p-value might be 0.06 — which <em>would</em> lead to rejection at α = .10 — or it might be 0.80, which would not. Without the actual figure you cannot decide, which is precisely why journals now insist on exact p-values. And in no case does a large p-value <em>prove</em> H₀; it only fails to contradict it.'},
+
+/* ---------------------------------------------- two proportions (7) */
+{s:'Comparing two proportions', n:'B20',
+ q:'A nutritionist wants to test whether the proportion of men and the proportion of women meeting the recommended calcium intake are the same, suspecting women are higher. Which hypotheses?',
+ o:['H₀: p_f = p_m versus Hₐ: p_f &gt; p_m',
+    'H₀: p_f = p_m versus Hₐ: p_f ≠ p_m',
+    'H₀: p_f &gt; p_m versus Hₐ: p_f = p_m',
+    'H₀: p̂_f = p̂_m versus Hₐ: p̂_f &gt; p̂_m'],
+ a:0,
+ x:'H₀ always states <b>no difference</b>, and Hₐ carries the direction the researcher suspects — here that women are higher. Two things that are always wrong: putting the inequality in H₀, and writing hypotheses about <b>p̂</b>. Hypotheses are statements about <em>population</em> parameters; the sample proportions are simply observed, so there is nothing to hypothesise about them.'},
+
+{s:'Comparing two proportions', n:'B21',
+ q:'A poll finds 58% of 750 people support the incumbent. After a scandal, a second poll finds 53% of 1,200. Testing H₀: p₁ = p₂, what is the pooled estimate of the overall proportion?',
+ o:['54.9%','55.5%','52.0%','53.8%'],
+ a:0,
+ x:'Pool the two <b>counts</b>, not the two percentages:<br>successes = 0.58(750) + 0.53(1200) = 435 + 636 = <b>1071</b><br>total = 750 + 1200 = <b>1950</b><br>p̂_pooled = 1071 ÷ 1950 = <b>0.549 = 54.9%</b><br>The plain average of 58% and 53% is 55.5%, which is wrong: the larger second sample must carry more weight, so the pooled figure is pulled toward 53%.'},
+
+{s:'Comparing two proportions', n:'B22',
+ q:'For those same two polls — 58% of 750, then 53% of 1,200, pooled proportion 0.549 — what is the test statistic for whether support has fallen, taking the <b>first poll minus the second</b>?',
+ o:['2.16','1.72','−2.16','3.08'],
+ a:0,
+ x:'SE_pooled = √(0.549 × 0.451 × (1/750 + 1/1200))<br>= √(0.2476 × 0.002167) = <b>0.02316</b><br>z = (0.58 − 0.53) ÷ 0.02316 = <b>2.16</b><br>The sign follows your subtraction order: p₁ − p₂ with the earlier poll first gives +2.16, and the one-sided p-value is P(Z ≥ 2.16) = .0154. Note that a <em>test</em> of two proportions uses the <b>pooled</b> SE — because H₀ says the two proportions are equal, so there is one common proportion to estimate.'},
+
+{s:'Comparing two proportions', n:'B23',
+ q:'An SRS of 120 cars from 2019 found 27 with a minor brake defect; an SRS of 450 from 2020 found 60. What is the 90% confidence interval for p₁ − p₂?',
+ o:['0.092 ± 0.068','0.092 ± 0.081','0.092 ± 0.041','0.092 ± 0.108'],
+ a:0,
+ x:'p̂₁ = 27 ÷ 120 = <b>0.225</b>, p̂₂ = 60 ÷ 450 = <b>0.133</b>, difference = <b>0.092</b><br>SE = √(0.225 × 0.775 ÷ 120 + 0.133 × 0.867 ÷ 450) = √(0.001453 + 0.000256) = <b>0.0414</b><br>m = 1.645 × 0.0414 = <b>0.068</b><br>Careful: a confidence <em>interval</em> for a difference uses the <b>unpooled</b> SE — there is no H₀ claiming the proportions are equal, so there is nothing to pool. (0.081 is the 95% margin.)<br>All four counts here are well above 10, so the ordinary formula applies. When they are not, the course’s two-sample plus-four rule adds <b>one success and one failure to each sample</b> before doing exactly the same arithmetic.'},
+
+{s:'Comparing two proportions', n:'B24',
+ q:'A manufacturer finds 24 defective in an SRS of 480 parts from supplier 1, and 12 defective in an SRS of 120 from supplier 2. Testing H₀: p₁ = p₂ against Hₐ: p₁ ≠ p₂, what is the p-value?',
+ o:['0.039','0.020','0.079','0.961'],
+ a:0,
+ x:'p̂₁ = 0.050, p̂₂ = 0.100, pooled = 36 ÷ 600 = <b>0.060</b><br>SE = √(0.060 × 0.940 × (1/480 + 1/120)) = <b>0.02424</b><br>z = (0.050 − 0.100) ÷ 0.02424 = <b>−2.06</b><br>Hₐ is two-sided, so double the tail: p = 2 × 0.0196 = <b>0.039</b><br>Since .039 &lt; .05 there is evidence of a real difference. (0.020 is the one-tailed value — halving instead of doubling is the standard slip here.)'},
+
+{s:'Comparing two proportions', n:'B25',
+ q:'A psychologist compares a therapy programme with nicotine patches. Of 44 smokers in the therapy group, 26 had quit after a year; of 42 using patches, 19 had quit. What is the test statistic for her claim that therapy is better?',
+ o:['1.29','2.15','0.14','1.96'],
+ a:0,
+ x:'p̂₁ = 26 ÷ 44 = <b>0.591</b>, p̂₂ = 19 ÷ 42 = <b>0.452</b><br>pooled = 45 ÷ 86 = <b>0.523</b><br>SE = √(0.523 × 0.477 × (1/44 + 1/42)) = <b>0.1077</b><br>z = (0.591 − 0.452) ÷ 0.1077 = <b>1.29</b><br>One-sided p = .099, above .05 — so despite a 14-percentage-point gap in the samples, there is <b>not</b> enough evidence to support the claim. With groups this small, a difference has to be large to clear the bar.'},
+
+{s:'Comparing two proportions', n:'B26',
+ q:'Of 200 men, 112 met the recommended calcium intake; of 280 women, 196 did. What is the absolute value of the test statistic for H₀: p_f = p_m?',
+ o:['3.15','2.80','1.40','4.08'],
+ a:0,
+ x:'p̂_m = 112 ÷ 200 = <b>0.560</b>, p̂_f = 196 ÷ 280 = <b>0.700</b><br>pooled = 308 ÷ 480 = <b>0.6417</b><br>SE = √(0.6417 × 0.3583 × (1/200 + 1/280)) = <b>0.04439</b><br>z = (0.700 − 0.560) ÷ 0.04439 = <b>3.15</b><br>A z above 3 means a two-sided p of about .0016 — strong evidence. The question asks for the absolute value precisely because the sign depends only on which group you subtract from which.'},
+
+/* ---------------------------------------------- interpretation (4) */
+{s:'Interpretation', n:'B27',
+ q:'A 90% confidence interval for the difference between two proportions is (−0.517, 0.089). What does this tell you?',
+ o:['Zero is inside the interval, so the two proportions may well be equal — there is no evidence of a difference',
+    'The first proportion is significantly smaller than the second',
+    'The second proportion is significantly larger than the first',
+    'The interval is too wide to be interpreted'],
+ a:0,
+ x:'A confidence interval is the set of values the data do not rule out, and <b>zero is inside this one</b> — so “no difference” is entirely plausible. The interval being wide is informative, not a defect: it says the samples were small and the study could not distinguish a large difference in either direction from no difference at all. The general rule: an interval for a <em>difference</em> that contains 0 corresponds to a non-significant test at the matching level.'},
+
+{s:'Interpretation', n:'B28',
+ q:'A researcher compared two proportions and found p = 0.121, concluding they were not significantly different at α = .05. Which interpretation of that p-value is correct?',
+ o:['If the two population proportions were truly equal, a difference at least as large as the one observed would occur in about 12.1% of samples',
+    'There is a 12.1% probability that the two proportions are equal',
+    'The researcher would obtain exactly this difference in 12.1% of repeated samples',
+    'The difference is 12.1% too small to be significant'],
+ a:0,
+ x:'A p-value is computed <b>assuming H₀ is true</b>, and it is the probability of a result <em>at least as extreme</em> as the one observed. Two traps here. It is P(data | H₀), not P(H₀ | data) — so it is not the probability the proportions are equal. And it covers everything as extreme <em>or more</em>, not the exact difference observed, whose probability is essentially zero.'},
+
+{s:'Interpretation', n:'B29',
+ q:'A 95% confidence interval for a proportion is (0.101, 0.219). What does “95% confident” mean?',
+ o:['If the same sampling procedure were repeated many times, about 95% of the intervals produced would contain the true proportion',
+    'There is a 95% probability that p lies between 0.101 and 0.219',
+    '95% of the sample values lie between 0.101 and 0.219',
+    '95% of all possible samples would give a proportion in this range'],
+ a:0,
+ x:'The 95% belongs to the <b>procedure</b>, not to this particular interval. Once the two numbers are on the page, p is either inside them or it is not — there is no probability left to speak of. Nor does the interval describe where the individual observations fall: it is an estimate of one number, the population proportion.'},
+
+{s:'Interpretation', n:'B30',
+ q:'A study of 400,000 people finds that a new supplement raises the recommended-intake rate from 61.0% to 61.8%, with p &lt; .001. How should this be reported?',
+ o:['Statistically significant, but a difference of 0.8 percentage points is probably too small to matter in practice',
+    'A large and important effect, because the p-value is so small',
+    'Not significant, because 0.8 percentage points is a small number',
+    'The p-value proves the supplement works'],
+ a:0,
+ x:'With 400,000 people the standard error is minute (z = 5.2), so even a trivial difference produces a tiny p-value. <b>Statistical significance answers “is it real?”, not “is it big?”</b> — the size question is answered by the estimate itself (0.8 percentage points) and its confidence interval, judged against what would actually matter. And no p-value ever proves anything; it only makes chance an uncomfortable explanation.'}
+
+];
+/* ===========================================================================
+   TEST C — Practical Assignment 2: are anecdotal opinions on education correct?
+   Design, ethics, hypotheses, one and two proportions, relative risk. 30 items.
+   Running sample (n = 200, drawn from the 5,000-student file):
+     Sex      Male 96   Female 104
+     Seat     Back 62   Middle 78   Front 60
+     Hours    Few 108   Many 92
+     GPA      Low 110   High 90
+     Sex × Hours   male 62 few / 34 many ; female 46 few / 58 many
+     Hours × GPA   many 56 high / 36 low ; few 34 high / 74 low
+     Seat × GPA    back 18/44 ; middle 33/45 ; front 39/21
+   =========================================================================== */
+var TESTC = [
+
+/* ---------------------------------------------- design & measurement (6) */
+{s:'Design &amp; measurement', n:'C1',
+ q:'An educational researcher collects data on 5,000 students: their sex, where they sit in the lecture hall, how many hours they study, and their average grade. He then asks whether seat location influences grades. Is this experimental or correlational?',
+ o:['Correlational — students chose their own seats; nothing was assigned',
+    'Experimental — there is a clear independent and dependent variable',
+    'Experimental — because students were randomly sampled',
+    'Correlational — because the sample is too large to control'],
+ a:0,
+ x:'Students <b>chose</b> where to sit. Nobody was assigned to the front row, so the researcher is observing a pre-existing arrangement. That makes it <b>correlational</b>. Note the distinction that this question turns on: random <em>sampling</em> (how you pick who to study) is not random <em>assignment</em> (who gets which condition). Only the second makes a study an experiment.'},
+
+{s:'Design &amp; measurement', n:'C2',
+ q:'Seat in the lecture hall is recorded as Back / Middle / Front. What is its measurement level?',
+ o:['Ordinal — the categories have a natural order but no fixed distance between them',
+    'Nominal — they are just three labels',
+    'Interval — back, middle and front are equally spaced',
+    'Ratio — front is three times back'],
+ a:0,
+ x:'<b>Ordinal.</b> There is a genuine order from back to front, so the categories are not interchangeable the way “male / female” would be. But the physical distance from the back to the middle need not equal the distance from the middle to the front, and there is no zero seat. Order without equal spacing is exactly what ordinal means.'},
+
+{s:'Design &amp; measurement', n:'C3',
+ q:'Hours studied is recorded as <b>0 = Few, 1 = Many</b> and GPA as <b>0 = Low, 1 = High</b>. What are their measurement levels?',
+ o:['Both nominal — two unordered categories each',
+    'Both ratio — hours and grades are quantities',
+    'Hours is ratio and GPA is ordinal',
+    'Both ordinal — “many” is more than “few”'],
+ a:0,
+ x:'<b>Both nominal.</b> The underlying things — hours and grade points — really are quantitative, but they have been <em>recoded into two categories</em>, and the analysis can only use what was recorded. Two categories can technically be called ordinal, but with only two levels the distinction does nothing: the same tests apply either way. The practical consequence is that proportions and chi-square are the tools available, not means and t-tests.'},
+
+{s:'Design &amp; measurement', n:'C4',
+ q:'In the research question “does the amount of time spent studying influence school performance?”, which is the dependent variable?',
+ o:['GPA','Hours studied','Seat','Sex'],
+ a:0,
+ x:'The dependent (response) variable is the one you expect to <em>change</em>: <b>GPA</b>. Hours studied is the independent (explanatory) variable. The test sentence — “does <u>hours studied</u> affect <u>GPA</u>?” — puts the dependent variable second. Seat and sex play no part in this particular question, though they are excellent candidates for lurking variables in it.'},
+
+{s:'Design &amp; measurement', n:'C5',
+ q:'Are the variables in this study measured between-subjects or within-subjects?',
+ o:['Between-subjects — each student contributes one value to each variable, and different students are compared',
+    'Within-subjects — each student is measured on four variables',
+    'Between-subjects for sex, within-subjects for GPA',
+    'Neither, because the study is correlational'],
+ a:0,
+ x:'<b>Between-subjects.</b> Every comparison in the study is between <em>different groups of students</em> — men against women, front-sitters against back-sitters. Measuring four things on one student does not make it within-subjects; that term is reserved for measuring the <em>same</em> variable on the same person more than once, such as a grade before and after an intervention.'},
+
+{s:'Design &amp; measurement', n:'C6',
+ q:'The data show that front-row sitters have higher grades. Which of the three causality conditions is clearly <b>not</b> satisfied?',
+ o:['Elimination of alternative explanations — motivated students may both sit at the front and study more',
+    'Covariation — the two variables do not actually go together',
+    'Temporal order — grades were recorded before seating',
+    'All three are satisfied, so seating causes grades'],
+ a:0,
+ x:'<b>Covariation</b> is demonstrated — the percentages really do differ. Temporal order is arguable, since seating habits do precede the end-of-term grade. What fails decisively is the third condition: <b>motivation</b> is an obvious lurking variable that would produce both front-row seating and high grades on its own, and nothing in this design rules it out. One clean failure is enough to block the causal claim.'},
+
+/* ---------------------------------------------- ethics (2) */
+{s:'Ethics', n:'C7',
+ q:'Which is the most serious ethical concern in collecting this data set?',
+ o:['Students’ grades and study habits are identifiable personal data, so informed consent and anonymisation are required',
+    'The sample of 5,000 is too large to be ethical',
+    'Recording sex is inherently unethical',
+    'There is no ethical concern, because no intervention took place'],
+ a:0,
+ x:'Grades are <b>sensitive personal data</b>, and combined with sex and seat they can identify individuals within a single cohort. That triggers the standard requirements: <b>informed consent</b>, <b>anonymisation</b> before analysis, and secure storage. The belief that observational research raises no ethical questions is exactly the mistake here — no intervention still means no permission to use someone’s record without asking.'},
+
+{s:'Ethics', n:'C8',
+ q:'The researcher plans to publish that “girls are better at studying than boys”. What is the ethical problem?',
+ o:['Reporting a group difference as a statement about ability risks stigmatising a group and overstates what the data show',
+    'Sex differences may never be studied',
+    'The finding would be too controversial to publish',
+    'There is no problem, provided the p-value is below .05'],
+ a:0,
+ x:'The data show a difference in <b>hours studied</b> in one sample — not a difference in <em>ability</em>, and not a statement about any individual. Restating it as a claim about what girls and boys <em>are</em> exceeds the evidence and invites harm to the group described. Studying group differences is legitimate; the obligation is to report exactly what was measured, with its uncertainty, and to be careful about what a p-value below .05 does and does not license.'},
+
+/* ---------------------------------------------- hypotheses (3) */
+{s:'Hypotheses', n:'C9',
+ q:'What is the null hypothesis for the research question “does gender influence the amount of time spent studying?”',
+ o:['The proportion of students who study many hours is the same for men and women in the population',
+    'Women study more than men',
+    'The sample proportions of men and women who study many hours are equal',
+    'There is a relationship between gender and hours studied'],
+ a:0,
+ x:'H₀ always states <b>no difference</b>, and always about the <b>population</b>. Two traps sit in the wrong options: a directional claim belongs in Hₐ, not H₀; and a hypothesis about the <em>sample</em> proportions is meaningless, because you can simply look at those and see whether they are equal. Hypotheses concern parameters you cannot see.'},
+
+{s:'Hypotheses', n:'C10',
+ q:'You predict that students who study many hours are more likely to have a high GPA. Which alternative hypothesis states this?',
+ o:['Hₐ: p(high | many) &gt; p(high | few)',
+    'Hₐ: p(high | many) ≠ p(high | few)',
+    'Hₐ: p(high | many) = p(high | few)',
+    'Hₐ: p̂(high | many) &gt; p̂(high | few)'],
+ a:0,
+ x:'A directional prediction needs a <b>one-sided</b> Hₐ with the inequality pointing the way you predicted. An equals sign belongs in H₀, and “≠” is the two-sided version, which would also count a result in the opposite direction. And again — hats denote sample quantities, so Hₐ must be written about <b>p</b>, not p̂.'},
+
+{s:'Hypotheses', n:'C11',
+ q:'Suppose every one of your three predictions turned out backwards — back-row sitters did better, men studied more, and more study time went with lower grades. What is the most sensible first response?',
+ o:['Look for lurking variables and for how the variables were coded, before concluding the anecdotes were simply inverted',
+    'Conclude that the opposite anecdotes are true',
+    'Discard the sample and draw a new one until the results come out right',
+    'Report only the result that matched your prediction'],
+ a:0,
+ x:'Three reversals at once is a pattern, and patterns usually have mundane explanations — most often a <b>coding slip</b> (0 and 1 swapped somewhere) or a real <b>lurking variable</b>. A plausible substantive story also exists: struggling students may study longer <em>because</em> they are struggling, reversing the expected direction. The two unacceptable responses are redrawing samples until one agrees with you, and reporting only what you liked; both turn research into a search for confirmation.'},
+
+/* ---------------------------------------------- describing the data (4) */
+{s:'Describing the data', n:'C12',
+ q:'In the sample of 200 students, 90 have a high GPA. What percentage is that, and what is the correct symbol?',
+ o:['45.0%, and it is p̂ — a statistic',
+    '45.0%, and it is p — a parameter',
+    '90.0%, and it is p̂',
+    '55.0%, and it is p'],
+ a:0,
+ x:'90 ÷ 200 = <b>0.450 = 45.0%</b>, and because it comes from a <b>sample</b> it is a <b>statistic</b>, written <b>p̂</b>. The unknown percentage among all 5,000 students is the parameter p. The memory hook: <b>s</b>ample → <b>s</b>tatistic, <b>p</b>opulation → <b>p</b>arameter.'},
+
+{s:'Describing the data', n:'C13',
+ q:'Of the 200 students, 62 sat at the back, 78 in the middle and 60 at the front. What kind of distribution are these three percentages?',
+ o:['A marginal distribution — it ignores every other variable and divides by the grand total',
+    'A conditional distribution — it depends on where students sit',
+    'A joint distribution — it describes cells of a two-way table',
+    'A sampling distribution'],
+ a:0,
+ x:'31.0%, 39.0% and 30.0% describe <b>seat alone</b>, dividing by the grand total of 200. That is a <b>marginal</b> distribution. It becomes conditional only when you restrict to a subgroup first — “of the students with a high GPA, what percentage sat at the front?” — and joint when you divide a single cell by the grand total.'},
+
+{s:'Describing the data', n:'C14',
+ q:'Of the 92 students who studied many hours, 56 have a high GPA; of the 108 who studied few hours, 34 do. Which figures should you compare?',
+ o:['60.9% against 31.5% — the row percentages within each study group',
+    '56 against 34 — the raw counts',
+    '28.0% against 17.0% — each count divided by 200',
+    '62.2% against 37.8% — each count divided by the 90 high-GPA students'],
+ a:0,
+ x:'The groups are different sizes (92 and 108), so <b>raw counts cannot be compared</b>. Divide each by its own group total: 56 ÷ 92 = <b>60.9%</b> and 34 ÷ 108 = <b>31.5%</b>. Those are the conditional distributions of GPA <em>given</em> study time, and the gap between them is what the research question is about. Dividing by 200 gives joint proportions; dividing by 90 answers a different question entirely.'},
+
+{s:'Describing the data', n:'C15',
+ q:'The percentage with a high GPA is 29.0% at the back, 42.3% in the middle and 65.0% at the front. What does this pattern suggest?',
+ o:['Seat and GPA are associated, and the association runs steadily from back to front',
+    'Sitting at the front causes better grades',
+    'Nothing, because the three groups are different sizes',
+    'The three percentages must add to 100%, so there is an error'],
+ a:0,
+ x:'Association in a two-way table means the <b>conditional distributions differ across the rows</b> — and 29.0%, 42.3% and 65.0% clearly do, in a steady progression. Causation is a separate claim this design cannot support. Note the last trap: these are three <em>separate</em> conditional percentages, each with its own denominator, so there is no reason for them to sum to anything.'},
+
+/* ---------------------------------------------- SE and CI, one proportion (5) */
+{s:'Standard error &amp; confidence intervals', n:'C16',
+ q:'With p̂ = 0.45 for a high GPA and n = 200, what is the standard error?',
+ o:['0.0352','0.0012','0.4975','0.0250'],
+ a:0,
+ x:'SE = √(p̂(1 − p̂) ÷ n) = √(0.45 × 0.55 ÷ 200) = √(0.2475 ÷ 200) = √0.0012375 = <b>0.0352</b>.<br>The commonest slip is stopping at 0.0012, which is the <em>variance</em> — the square root is the whole point, because it returns the answer to the scale of a proportion. (0.4975 is √0.2475, forgetting to divide by n.)'},
+
+{s:'Standard error &amp; confidence intervals', n:'C17',
+ q:'Using SE = 0.0352, what is the margin of error for a <b>90%</b> confidence interval?',
+ o:['0.058','0.069','0.091','0.035'],
+ a:0,
+ x:'m = z* × SE, and the 90% critical value is <b>z* = 1.645</b>:<br>m = 1.645 × 0.0352 = <b>0.058</b><br>Know the three by heart: <b>1.645 for 90%, 1.96 for 95%, 2.576 for 99%</b>. (0.069 is the 95% margin — picking the wrong z* is the most frequent error on this kind of question.)'},
+
+{s:'Standard error &amp; confidence intervals', n:'C18',
+ q:'What is the 90% confidence interval for the proportion of students with a high GPA?',
+ o:['(0.392, 0.508)','(0.381, 0.519)','(0.415, 0.485)','(0.345, 0.555)'],
+ a:0,
+ x:'0.450 ± 0.058 = <b>(0.392, 0.508)</b>.<br>Check the condition first: 90 successes and 110 failures, both far above 10, so the large-sample interval is valid. Notice that the interval straddles 0.50, so these data do not rule out half the students having a high GPA. (0.381 to 0.519 is the wider 95% interval.)'},
+
+{s:'Standard error &amp; confidence intervals', n:'C19',
+ q:'What does that interval mean?',
+ o:['If the sampling procedure were repeated many times, about 90% of the intervals produced would contain the true proportion',
+    'There is a 90% probability that the true proportion lies between 0.392 and 0.508',
+    '90% of the 200 students have a GPA in that range',
+    '90% of all samples would give p̂ between 0.392 and 0.508'],
+ a:0,
+ x:'The 90% is a property of the <b>method</b>, not of this one interval. Once the numbers are computed, the true proportion is either inside them or it is not. And an interval for a proportion says nothing about individual students — it estimates a single population number, which is why an interval for 200 students is only about a tenth as wide as the data themselves.'},
+
+{s:'Standard error &amp; confidence intervals', n:'C20',
+ q:'If the researcher had drawn 800 students instead of 200, and found the same p̂ = 0.45, what would happen to the 90% interval?',
+ o:['It would be about half as wide, because the standard error falls by a factor of √4',
+    'It would be about a quarter as wide',
+    'It would be twice as wide',
+    'It would be unchanged, since p̂ is the same'],
+ a:0,
+ x:'SE = √(p̂(1 − p̂) ÷ n), so quadrupling n divides the SE by √4 = 2 and <b>halves the width</b>. The new SE would be 0.0176 and the interval about (0.421, 0.479). Width falls with <b>√n</b>, not with n — which is why each further halving of the margin costs four times the fieldwork.'},
+
+/* ---------------------------------------------- difference D (6) */
+{s:'The difference D between two proportions', n:'C21',
+ q:'Of 96 male students, 34 study many hours; of 104 female students, 58 do. What is D, the difference in the percentages studying many hours?',
+ o:['20.4 percentage points (55.8% − 35.4%)',
+    '24 students (58 − 34)',
+    '12.0 percentage points (29.0% − 17.0%)',
+    '1.58 (55.8 ÷ 35.4)'],
+ a:0,
+ x:'Each proportion is taken <b>within its own group</b>:<br>men: 34 ÷ 96 = <b>0.354 = 35.4%</b><br>women: 58 ÷ 104 = <b>0.558 = 55.8%</b><br>D = 0.558 − 0.354 = <b>0.204</b>, that is <b>20.4 percentage points</b>.<br>The raw difference of 24 students ignores that the two groups are different sizes; dividing by 200 gives joint proportions; and the ratio 1.58 is a <em>relative risk</em>, a different quantity answering a different question.'},
+
+{s:'The difference D between two proportions', n:'C22',
+ q:'What is the standard error of that difference D, for building a confidence interval?',
+ o:['0.069','0.049','0.035','0.005'],
+ a:0,
+ x:'For an <b>interval</b>, the SE is unpooled — each group contributes its own variance:<br>SE = √(p̂₁(1 − p̂₁)/n₁ + p̂₂(1 − p̂₂)/n₂)<br>= √(0.354 × 0.646 ÷ 96 + 0.558 × 0.442 ÷ 104)<br>= √(0.002382 + 0.002372) = √0.004754 = <b>0.069</b><br>Note that you <b>add the two variances and then take one square root</b> — adding the two standard errors instead is the classic mistake, and gives too large an answer.'},
+
+{s:'The difference D between two proportions', n:'C23',
+ q:'What is the 95% confidence interval for D?',
+ o:['(0.068, 0.339)','(0.090, 0.317)','(0.135, 0.273)','(−0.068, 0.475)'],
+ a:0,
+ x:'D ± 1.96 × SE = 0.204 ± 1.96(0.069) = 0.204 ± <b>0.135</b> = <b>(0.068, 0.339)</b>.<br>In words: the female–male gap in studying many hours is somewhere between about 7 and 34 percentage points. Wide, but entirely on the positive side — which is what decides the test in the next question. (0.090 to 0.317 is the 90% interval.)'},
+
+{s:'The difference D between two proportions', n:'C24',
+ q:'Using that 95% interval (0.068, 0.339), what do you conclude about H₀: p_female = p_male at α = .05?',
+ o:['Reject H₀ — zero lies entirely outside the interval, so a difference of zero is not plausible',
+    'Fail to reject H₀ — the interval is too wide to be conclusive',
+    'Reject H₀ — because the interval is entirely below 1',
+    'The interval cannot be used to test a hypothesis'],
+ a:0,
+ x:'The interval is the set of values the data do not rule out, and <b>0 is not among them</b>: the whole interval lies above zero. So “no difference” is implausible and H₀ is <b>rejected</b> at the matching 5% level. The general rule for a <em>difference</em>: the null value is <b>0</b>, and an interval excluding 0 corresponds to p &lt; .05. (Watch for the distractor that says “because the interval is entirely below 1”: the null value of <b>1</b> belongs to a <em>ratio</em> such as relative risk, not to a difference.)'},
+
+{s:'The difference D between two proportions', n:'C25',
+ q:'To <b>test</b> H₀: p_female = p_male rather than build an interval, which standard error should be used?',
+ o:['The pooled SE, using the combined proportion 92 ÷ 200 = 0.46',
+    'The same unpooled SE of 0.069',
+    'The SE of the larger group only',
+    'The SE of GPA, 0.035'],
+ a:0,
+ x:'H₀ claims the two proportions are <b>equal</b>, so under H₀ there is a single common proportion, best estimated by pooling: p̂ = (34 + 58) ÷ 200 = <b>0.46</b>.<br>SE_pooled = √(0.46 × 0.54 × (1/96 + 1/104)) = <b>0.0705</b>, giving z = 0.204 ÷ 0.0705 = <b>2.89</b>, two-sided p = .004.<br>The rule to memorise: <b>interval → unpooled; test → pooled.</b> A confidence interval has no H₀ to assume, so it has nothing to pool.'},
+
+{s:'The difference D between two proportions', n:'C26',
+ q:'How should the result be written in APA style?',
+ o:['z = 2.89, p = .004, 95% CI [0.068, 0.339]',
+    'z = 2.89, p = 0.004',
+    'χ²(1, N = 200) = 2.89, p = .004',
+    'p = .004, so gender causes the difference in study hours'],
+ a:0,
+ x:'Report the <b>statistic, the exact p-value, and the confidence interval</b> — the interval is what tells the reader how big the effect is, which the p-value never does. Conventions to get right: no leading zero on p, and the statistic italicised. The z of 2.89 is not a χ² (though a chi-square on the same table would give 8.32, its square, and the identical p-value). And no test of any kind licenses the word “causes” here.'},
+
+/* ---------------------------------------------- relative risk (4) */
+{s:'Relative risk', n:'C27',
+ q:'Of the 92 students who studied many hours, 56 have a high GPA (60.9%); of the 108 who studied few hours, 34 do (31.5%). What is the relative risk of a high GPA for “many” compared with “few”?',
+ o:['1.93','0.52','1.29','0.29'],
+ a:0,
+ x:'RR = 0.609 ÷ 0.315 = <b>1.93</b>.<br>In words: students who studied many hours were <b>about 1.9 times as likely</b> to have a high GPA as those who studied few. A relative risk is a <b>ratio</b>, so it is always positive and its null value is <b>1</b>, not 0. (0.29 is the <em>difference</em> between the two proportions — a perfectly good number, but the answer to a different question.)'},
+
+{s:'Relative risk', n:'C28',
+ q:'What is the relative risk the other way round — “few hours” compared with “many hours”?',
+ o:['0.52','−1.93','1.93','0.29'],
+ a:0,
+ x:'RR = 0.315 ÷ 0.609 = <b>0.52</b> — and notice it is the <b>reciprocal</b> of 1.93, since 1 ÷ 1.93 = 0.52. Reversing the comparison does not change the finding, only how it is phrased: students studying few hours were about half as likely to have a high GPA. A relative risk can never be negative, because it is a ratio of two positive numbers.'},
+
+{s:'Relative risk', n:'C29',
+ q:'What would a relative risk of exactly 1.00 mean?',
+ o:['The two groups have identical proportions — no association at all',
+    'The two groups differ by exactly one percentage point',
+    'The first group is 100% more likely than the second',
+    'The test is significant at the 1% level'],
+ a:0,
+ x:'RR = 1 means the two proportions are <b>equal</b>, so the ratio is one and knowing the group tells you nothing. That is why <b>1 is the null value for a ratio</b>, exactly as <b>0</b> is for a difference — and why a confidence interval for a relative risk is read by asking whether it contains 1, not whether it contains 0.'},
+
+{s:'Relative risk', n:'C30',
+ q:'When is a relative risk more informative than the difference between two proportions?',
+ o:['When the underlying proportions are small, where a doubling matters more than a two-point gap',
+    'Always — a ratio is more accurate than a difference',
+    'Only when the two groups are the same size',
+    'When the outcome variable is quantitative'],
+ a:0,
+ x:'Compare two cases. Going from 1% to 2% is a difference of just <b>one percentage point</b> but a relative risk of <b>2.0</b> — a doubling, which matters a great deal for a rare outcome. Going from 50% to 51% has the same one-point difference but RR = 1.02, which is nothing. Neither measure is more “accurate”: the difference tells you <em>how many more people</em>, the ratio tells you <em>how many times more likely</em>, and a good report gives both.'}
+
+];
+
+(function(){
+'use strict';
+
+/* ================================================================ the three tests */
+var TESTS = [
+  {id:'A', n:'Test A', t:'Chi-square &amp; design',
+   sub:'Test A · Worked Example 3 · care of and for the elderly',
+   items:TESTA,
+   intro:'Thirty questions on <b>Worked Example 3</b>: the study of 60 care-home residents and their 60 carers. '
+       + 'It runs from research design and measurement level through both chi-square tests — the test for independence and the '
+       + 'goodness-of-fit test — to expected counts, cell contributions, the decision rule and APA reporting. '
+       + '<b>Every number you need is inside the question</b>, so there is nothing to look up.',
+   src:'Built from Worked Example 3 (Eloranta et al., 2010 — care for senior citizens in Finland).',
+   dsTitle:'The residents data these questions use',
+   ds:'<p>All 120 respondents: <b>60 residents</b> answering about themselves and <b>60 carers</b> answering about those residents. '
+     + 'Every question that needs numbers uses this table.</p>'
+     + '<div class="dsg">'
+     + '<table><tr><th>Happy</th><th>yes</th><th>no</th></tr>'
+     + '<tr><td>Residents</td><td>48</td><td>12</td></tr><tr><td>Carers</td><td>36</td><td>24</td></tr></table>'
+     + '<table><tr><th>Desire to live</th><th>yes</th><th>no</th></tr>'
+     + '<tr><td>Residents</td><td>51</td><td>9</td></tr><tr><td>Carers</td><td>42</td><td>18</td></tr></table>'
+     + '<table><tr><th>Being needed</th><th>yes</th><th>no</th></tr>'
+     + '<tr><td>Residents</td><td>39</td><td>21</td></tr><tr><td>Carers</td><td>33</td><td>27</td></tr></table>'
+     + '</div>'
+     + '<p>Critical values: χ² at α = .05 is <b>3.841</b> for df = 1 and <b>5.991</b> for df = 2.</p>'},
+
+  {id:'B', n:'Test B', t:'Proportions',
+   sub:'Test B · Homework Assignment 2 · confidence intervals and tests for p',
+   items:TESTB,
+   intro:'Thirty questions on <b>Homework Assignment 2</b>: everything about proportions. Conditions and the plus-four method, '
+       + 'confidence intervals and margins of error, the sampling distribution of p̂, sample-size planning, the one-proportion z-test, '
+       + 'and comparing two proportions with both pooled and unpooled standard errors. '
+       + '<b>Same question types as the homework, all-new numbers</b> — so the answer key you already have will not help you.',
+   src:'Built from the 25 multiple-choice items in Homework Assignment 2. Every figure recomputed from scratch.',
+   dsTitle:'The numbers worth having in your head',
+   ds:'<p>Nothing to memorise here beyond these, which recur throughout the test.</p>'
+     + '<div class="dsg">'
+     + '<table><tr><th>Confidence</th><th>z*</th></tr>'
+     + '<tr><td>90%</td><td>1.645</td></tr><tr><td>95%</td><td>1.960</td></tr><tr><td>99%</td><td>2.576</td></tr></table>'
+     + '<table><tr><th>Quantity</th><th>Formula</th></tr>'
+     + '<tr><td>SE for a CI</td><td>√(p̂(1−p̂)/n)</td></tr>'
+     + '<tr><td>SE for a test</td><td>√(p₀(1−p₀)/n)</td></tr>'
+     + '<tr><td>Plus four</td><td>p̃ = (X+2)/(n+4)</td></tr></table>'
+     + '</div>'
+     + '<p>The rule that decides which interval to use: <b>at least 10 successes and 10 failures</b>, otherwise plus four. '
+     + 'And for two proportions — <b>interval → unpooled SE, test → pooled SE</b>.</p>'},
+
+  {id:'C', n:'Test C', t:'Two proportions in practice',
+   sub:'Test C · Practical Assignment 2 · anecdotal opinions on education',
+   items:TESTC,
+   intro:'Thirty questions on <b>Practical Assignment 2</b>: the sample of 200 students, their seats, their study hours and their grades. '
+       + 'Design and measurement, the ethics of using student records, stating hypotheses, reading a cross-table, '
+       + 'the standard error and confidence interval for one proportion, the difference D between two proportions, and relative risk. '
+       + '<b>All the counts are in the panel below and repeated inside each question.</b>',
+   src:'Built from Practical Assignment 2 (StudentSeats_UK). The sample of 200 below is a simulated draw with the structure the assignment describes.',
+   dsTitle:'The sample of 200 students these questions use',
+   ds:'<p>One draw of <b>200 students</b> from the 5,000-student file.</p>'
+     + '<div class="dsg">'
+     + '<table><tr><th>Sex × Hours</th><th>few</th><th>many</th><th>total</th></tr>'
+     + '<tr><td>Male</td><td>62</td><td>34</td><td>96</td></tr>'
+     + '<tr><td>Female</td><td>46</td><td>58</td><td>104</td></tr>'
+     + '<tr><td><b>Total</b></td><td><b>108</b></td><td><b>92</b></td><td><b>200</b></td></tr></table>'
+     + '<table><tr><th>Hours × GPA</th><th>high</th><th>low</th><th>total</th></tr>'
+     + '<tr><td>Many hours</td><td>56</td><td>36</td><td>92</td></tr>'
+     + '<tr><td>Few hours</td><td>34</td><td>74</td><td>108</td></tr>'
+     + '<tr><td><b>Total</b></td><td><b>90</b></td><td><b>110</b></td><td><b>200</b></td></tr></table>'
+     + '<table><tr><th>Seat × GPA</th><th>high</th><th>low</th><th>total</th></tr>'
+     + '<tr><td>Back</td><td>18</td><td>44</td><td>62</td></tr>'
+     + '<tr><td>Middle</td><td>33</td><td>45</td><td>78</td></tr>'
+     + '<tr><td>Front</td><td>39</td><td>21</td><td>60</td></tr></table>'
+     + '</div>'
+     + '<p>Useful row percentages: <b>35.4%</b> of men and <b>55.8%</b> of women studied many hours; '
+     + '<b>60.9%</b> of many-hours students and <b>31.5%</b> of few-hours students have a high GPA; '
+     + 'high-GPA rates by seat are <b>29.0% / 42.3% / 65.0%</b> from back to front.</p>'}
+];
+
+var LET = ['A','B','C','D'];
+var cur = 0;
+var state = TESTS.map(function(T){
+  return {answered:{}, correct:{}, onlyWrong:false, revealAll:false};
+});
+
+var list = document.getElementById('list');
+var done = document.getElementById('done');
+
+/* ---------------------------------------------------------------- tabs */
+(function(){
+  var host = document.getElementById('tabs');
+  TESTS.forEach(function(T, i){
+    var b = document.createElement('button');
+    b.className = 'tab';
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', String(i===0));
+    b.innerHTML = '<span class="tn">' + T.n + '</span><span class="tt">' + T.t + '</span>'
+                + '<span class="tc" id="tabsc' + i + '">0 / ' + T.items.length + '</span>';
+    b.addEventListener('click', function(){ pick(i); });
+    host.appendChild(b);
+  });
+})();
+
+function pick(i){
+  cur = i;
+  [].forEach.call(document.querySelectorAll('.tab'), function(b, k){
+    b.setAttribute('aria-selected', String(k===i));
+  });
+  var T = TESTS[i];
+  document.getElementById('hsub').textContent  = T.sub.replace(/<[^>]+>/g,'');
+  document.getElementById('intro').innerHTML   = T.intro;
+  document.getElementById('src').textContent   = T.src;
+  document.getElementById('dsTitle').textContent = T.dsTitle;
+  document.getElementById('dsBody').innerHTML  = T.ds;
+  draw(); board();
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+/* ---------------------------------------------------------------- scoring */
+function stats(){
+  var T = TESTS[cur], S = state[cur];
+  var a = Object.keys(S.answered).length, c = 0;
+  Object.keys(S.correct).forEach(function(k){ if (S.correct[k]) c++; });
+  return {answered:a, correct:c, total:T.items.length};
+}
+
+function grade(pct){
+  if (pct >= 90) return 'That is a <b>9 or 10</b> — straight A territory.';
+  if (pct >= 80) return 'That is around an <b>8</b>. Close. The misses below are the gap.';
+  if (pct >= 70) return 'That is around a <b>7</b>. Solid pass, not yet an A.';
+  if (pct >= 55) return 'That is around a <b>6</b> — a pass, with real gaps.';
+  return 'Below a pass. Read every explanation below before trying again.';
+}
+
+function board(){
+  var T = TESTS[cur], S = state[cur], s = stats();
+  document.getElementById('sc').textContent  = s.correct + ' / ' + s.answered;
+  document.getElementById('rem').textContent = s.total - s.answered;
+  document.getElementById('bar').style.width = Math.round(100 * s.answered / s.total) + '%';
+  document.getElementById('barlab').textContent =
+    s.answered === 0 ? 'Nothing answered yet'
+      : s.answered + ' of ' + s.total + ' answered · ' +
+        Math.round(100 * s.correct / s.answered) + '% right so far';
+  document.getElementById('btnWrong').classList.toggle('on', S.onlyWrong);
+  document.getElementById('btnReveal').classList.toggle('on', S.revealAll);
+  document.getElementById('btnReveal').textContent =
+    S.revealAll ? 'Hide all answers' : 'Reveal all answers';
+
+  var tc = document.getElementById('tabsc' + cur);
+  if (tc) tc.textContent = s.correct + ' / ' + s.total;
+
+  if (s.answered === s.total) {
+    var per = {}, order = [];
+    T.items.forEach(function(m, i){
+      if (!per[m.s]) { per[m.s] = [0, 0]; order.push(m.s); }
+      per[m.s][1]++;
+      if (S.correct[i]) per[m.s][0]++;
+    });
+    var rows = order.map(function(k){
+      return '<tr><td>' + k + '</td><td>' + per[k][0] + ' / ' + per[k][1] + '</td></tr>';
+    }).join('');
+    var pct = Math.round(100 * s.correct / s.total);
+    done.innerHTML = '<div class="dt">' + s.correct + ' / ' + s.total + '</div>'
+      + '<div class="dd">' + pct + '% on ' + T.n + ' — where the marks went:</div>'
+      + '<table>' + rows + '</table>'
+      + '<div class="grade">' + grade(pct) + '</div>';
+    done.classList.add('show');
+  } else {
+    done.classList.remove('show');
+  }
+}
+
+/* ---------------------------------------------------------------- render */
+function draw(){
+  var T = TESTS[cur], S = state[cur];
+  list.innerHTML = '';
+  var shownSection = null;
+
+  T.items.forEach(function(m, i){
+    if (S.onlyWrong && !(S.answered[i] !== undefined && !S.correct[i])) return;
+
+    if (m.s !== shownSection) {
+      shownSection = m.s;
+      var h = document.createElement('div');
+      h.className = 'sec';
+      h.innerHTML = '<div class="sn">' + T.n + '</div>'
+                  + '<div class="st">' + m.s + '</div><div class="sr"></div>';
+      list.appendChild(h);
+    }
+
+    var d = document.createElement('div');
+    d.className = 'q';
+
+    /* scramble the option order from the question text, so the key is never a pattern */
+    var h2 = i * 17 + 5;
+    for (var c = 0; c < m.q.length; c++) h2 = (h2 * 31 + m.q.charCodeAt(c)) | 0;
+    var rot = ((h2 % m.o.length) + m.o.length) % m.o.length;
+    var order = m.o.map(function(_, k){ return (k + m.o.length - rot) % m.o.length; });
+    var ans = order.indexOf(m.a);
+
+    var opts = '';
+    order.forEach(function(src, k){
+      opts += '<button class="opt" data-k="' + k + '"><span class="ol">' + LET[k] + '</span>'
+            + '<span>' + m.o[src] + '</span>'
+            + '<span class="mk"></span></button>';
+    });
+
+    d.innerHTML = '<div class="qh"><span class="qn">' + m.n + '</span>'
+                + '<span class="qtag">' + m.s + '</span></div>'
+                + '<div class="qq">' + m.q + '</div>'
+                + '<div class="opts">' + opts + '</div>'
+                + '<div class="ansline"></div>'
+                + '<div class="expl"><div class="el">Worked answer</div>' + m.x + '</div>';
+
+    var btns = [].slice.call(d.querySelectorAll('.opt'));
+    var line = d.querySelector('.ansline');
+
+    function settle(picked){
+      btns.forEach(function(x, j){
+        x.disabled = true;
+        if (j === ans) {
+          x.classList.add('correct');
+          x.querySelector('.mk').textContent = 'correct answer';
+        }
+      });
+      if (picked !== null && picked !== undefined && picked !== ans) {
+        btns[picked].classList.add('wrong');
+        btns[picked].querySelector('.mk').textContent = 'you chose this';
+      }
+      if (picked === null || picked === undefined) {
+        line.innerHTML = '<span class="pill ok">' + LET[ans] + '</span>'
+                       + '<span>The correct answer is <b>' + LET[ans] + '</b>.</span>';
+      } else if (picked === ans) {
+        line.innerHTML = '<span class="pill ok">✓ Correct</span>'
+                       + '<span>The answer is <b>' + LET[ans] + '</b>.</span>';
+      } else {
+        line.innerHTML = '<span class="pill no">✕ Not quite</span>'
+                       + '<span>You chose <b>' + LET[picked] + '</b>. The correct answer is <b>' + LET[ans] + '</b>.</span>';
+      }
+      line.classList.add('show');
+      d.querySelector('.expl').classList.add('show');
+    }
+
+    if (S.answered[i] !== undefined) {
+      settle(S.answered[i]);
+    } else if (S.revealAll) {
+      settle(null);                    /* shows the key, scores nothing */
+    } else {
+      btns.forEach(function(b){
+        b.addEventListener('click', function(){
+          var k = +b.dataset.k;
+          S.answered[i] = k;
+          S.correct[i]  = (k === ans);
+          settle(k);
+          board();
+        });
+      });
+    }
+    list.appendChild(d);
+  });
+
+  if (!list.children.length) {
+    list.innerHTML = '<div class="q"><div class="qq" style="margin:0">'
+      + 'No mistakes to review in this test yet.</div></div>';
+  }
+}
+
+/* ---------------------------------------------------------------- controls */
+document.getElementById('btnReset').addEventListener('click', function(){
+  state[cur] = {answered:{}, correct:{}, onlyWrong:false, revealAll:false};
+  draw(); board();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+document.getElementById('btnWrong').addEventListener('click', function(){
+  var S = state[cur];
+  S.onlyWrong = !S.onlyWrong;
+  if (S.onlyWrong) S.revealAll = false;
+  draw(); board();
+});
+document.getElementById('btnReveal').addEventListener('click', function(){
+  var S = state[cur];
+  S.revealAll = !S.revealAll;
+  if (S.revealAll) S.onlyWrong = false;
+  draw(); board();
+});
+
+pick(0);
+})();
+</script>
+</body>
+</html>
